@@ -90,7 +90,7 @@ const Projects = () => {
     }
     try {
       setIsSaving(true);
-      const { data } = await api.put(`/api/project/save/${projectId}`, {
+      await api.put(`/api/project/save/${projectId}`, {
         code,
       });
       toast.success("Project saved successfully");
