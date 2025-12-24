@@ -4,6 +4,13 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./prisma.js";
 
 const trustedOrigins = process.env.TRUSTED_ORIGINS?.split(",") || [];
+if (
+  !process.env.TRUSTED_ORIGINS ||
+  !process.env.BETTER_AUTH_URL ||
+  !process.env.BETTER_AUTH_SECRET
+) {
+  throw new Error("Missing auth environment variables");
+}
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
