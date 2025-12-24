@@ -5,20 +5,26 @@ import { authClient } from "@/lib/auth-client";
 import { UserButton } from "@daveyplate/better-auth-ui";
 import api from "@/configs/axios";
 import { toast } from "sonner";
+import { Loader2Icon } from "lucide-react";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const navigate = useNavigate();
   const { data: session } = authClient.useSession();
   const [credits, setCredits] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
 
   const getCredits = async () => {
+    setLoading(true);
     try {
       const { data } = await api.get("/api/user/credits");
       setCredits(data?.credits);
+      setLoading(false);
     } catch (error: any) {
       toast.error(error.response.data.message || error.message);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -30,9 +36,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="z-50 flex items-center justify-between w-full py-4 px-4 md:px-16 lg:px-24 xl:px-32 backdrop-blur border-b text-white border-slate-800">
+      <nav className="z-50 flex flex-wrap max-sm:gap-2 items-center justify-between w-full py-4 px-4 md:px-16 lg:px-24 xl:px-32 backdrop-blur border-b text-white border-slate-800">
         <Link to={"/"}>
-          <img src={assets.logo} alt="logo" className="h-5 sm:h-7" />
+          <img src={assets.logo} alt="logo" className="h-6 sm:h-8" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8 transition duration-500">
@@ -43,7 +49,9 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          {!session?.user ? (
+          {loading ? (
+            <Loader2Icon className="animate-spin size-7 text-white" />
+          ) : !session?.user ? (
             <button
               onClick={() => navigate("/auth/signin")}
               className="px-6 py-1.5 max-sm:text-sm bg-indigo-600 active:scale-95 hover:bg-indigo-700 transition rounded"
@@ -55,9 +63,10 @@ const Navbar = () => {
               <button className="bg-white/10 px-5 py-1.5 text-xs sm:text-sm border text-gray-200 rounded-full">
                 Credits : <span className="text-indigo-300">{credits}</span>
               </button>
-              <UserButton size={"icon"} />
+              <UserButton size="icon" />
             </>
           )}
+
           <button
             id="open-menu"
             className="md:hidden active:scale-90 transition"
