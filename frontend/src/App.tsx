@@ -15,26 +15,27 @@ import Loading from "./pages/Loading";
 const App = () => {
   const { pathname } = useLocation();
   const hideNavbar =
-    (pathname.startsWith("/projects") && pathname !== "/projects") ||
+    (pathname.startsWith("/project") && pathname !== "/projects") ||
     pathname.startsWith("/view/") ||
     pathname.startsWith("/preview/");
   return (
     <div>
       <Toaster
-        position="top-right"
+        position="bottom-right"
         toastOptions={{
           style: {
-            backgroundColor: "#1e293b",
-            color: "#fff",
+            background: "#FFFFFF",
+            color: "#111827",
             fontFamily: "Poppins",
             fontSize: "14px",
-            padding: "10px",
-            borderRadius: "5px",
-            boxShadow:
-              "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+            padding: "12px 14px",
+            borderRadius: "10px",
+            border: "1px solid #E5E7EB",
+            boxShadow: "0 12px 30px rgba(0, 0, 0, 0.35)",
           },
         }}
       />
+
       {!hideNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
