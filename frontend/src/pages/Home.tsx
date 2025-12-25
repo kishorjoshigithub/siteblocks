@@ -13,122 +13,82 @@ const Home = () => {
 
   const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      if (!session?.user) {
-        toast.error("Please login to create a project");
-        return;
-      } else if (!input.trim()) {
-        return toast.error("Please enter a description");
-      }
 
+    if (!session?.user) {
+      toast.error("Please login to create a website");
+      return;
+    }
+
+    if (!input.trim()) {
+      toast.error("Describe what you want to build");
+      return;
+    }
+
+    if (input.length < 20) {
+      toast.error("Describe your website in more detail");
+      return;
+    }
+
+    try {
       setLoading(true);
       const { data } = await api.post("/api/user/project", {
         initial_prompt: input,
       });
-      setLoading(false);
-      navigate(`/projects/${data?.projectId}`);
+      navigate(`/project/${data?.projectId}`);
     } catch (error: any) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
       setLoading(false);
-      toast.error(error.response.data.message || error.message);
-      console.error(error);
     }
   };
 
   return (
-    <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins">
-      <img
-        src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/refs/heads/main/assets/hero/bg-gradient-2.png"
-        className="absolute inset-0 -z-10 size-full opacity"
-        alt=""
-      />
-
-      <a
-        href="https://prebuiltui.com"
-        className="flex items-center gap-2 border border-slate-700 rounded-full p-1 pr-3 text-sm mt-20"
-      >
-        <span className="bg-indigo-600 text-xs px-3 py-1 rounded-full">
+    <section className="min-h-screen bg-[#0B0D12] text-gray-200 flex flex-col items-center px-4 pb-24 font-poppins">
+      <div className="mt-24 flex items-center gap-2 border border-gray-700 rounded-full px-4 py-1 text-xs">
+        <span className="bg-indigo-600 text-white px-2 py-0.5 rounded-full">
           NEW
         </span>
-        <p className="flex items-center gap-2">
-          <span>Try 30 days free trial option</span>
-          <svg
-            className="mt-px"
-            width="6"
-            height="9"
-            viewBox="0 0 6 9"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="m1 1 4 3.5L1 8"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </p>
-      </a>
+        <span>Build websites free with 20 starter credits</span>
+      </div>
 
-      <h1 className="text-center text-[40px] leading-12 md:text-6xl md:leading-16 mt-4 font-semibold max-w-3xl">
-        Turn thoughts into websites instantly, with AI.
+      <h1 className="text-center text-4xl md:text-6xl font-semibold mt-6 max-w-4xl leading-tight">
+        Build websites instantly with <br />
+        <span className="text-indigo-400">AI-powered blocks</span>
       </h1>
 
-      <p className="text-center text-base max-w-md mt-2">
-        create, customize, and launch stunning websites in minutes, powered by
-        advanced AI technology.
+      <p className="text-center text-gray-400 text-base md:text-lg max-w-xl mt-4">
+        Siteblocks helps you turn ideas into fully functional websites in
+        minutes. No design skills, no coding — just describe and launch.
       </p>
 
       <form
         onSubmit={onSubmitHandler}
-        className="bg-white/10 max-w-2xl w-full rounded-xl p-4 mt-10 border border-indigo-600/70 focus-within:ring-2 ring-indigo-500 transition-all"
+        className="w-full max-w-2xl mt-12 bg-[#121621] border border-gray-700 rounded-xl p-4 focus-within:ring-2 ring-indigo-500 transition"
       >
         <textarea
+          value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="bg-transparent outline-none text-gray-300 resize-none w-full"
           rows={4}
-          placeholder="Describe your presentation in details"
-          required
+          className="w-full resize-none bg-transparent outline-none text-gray-200 placeholder:text-gray-500"
+          placeholder="Describe the website you want (e.g. landing page for a SaaS, portfolio, blog...)"
         />
-        <button className="ml-auto flex items-center gap-2 bg-linear-to-r from-[#CB52D4] to-indigo-600 rounded-md px-4 py-2">
-          {!loading ? (
-            "Create with AI"
-          ) : (
-            <>
-              Creating{" "}
-              <Loader2 className="animate-spin size-4 text-white" />{" "}
-            </>
-          )}
-        </button>
-      </form>
 
-      <div className="flex flex-wrap items-center justify-center gap-16 md:gap-20 mx-auto mt-16">
-        <img
-          className="max-w-28 md:max-w-32"
-          src="https://saasly.prebuiltui.com/assets/companies-logo/framer.svg"
-          alt=""
-        />
-        <img
-          className="max-w-28 md:max-w-32"
-          src="https://saasly.prebuiltui.com/assets/companies-logo/huawei.svg"
-          alt=""
-        />
-        <img
-          className="max-w-28 md:max-w-32"
-          src="https://saasly.prebuiltui.com/assets/companies-logo/instagram.svg"
-          alt=""
-        />
-        <img
-          className="max-w-28 md:max-w-32"
-          src="https://saasly.prebuiltui.com/assets/companies-logo/microsoft.svg"
-          alt=""
-        />
-        <img
-          className="max-w-28 md:max-w-32"
-          src="https://saasly.prebuiltui.com/assets/companies-logo/walmart.svg"
-          alt=""
-        />
-      </div>
+        <div className="flex justify-end mt-4">
+          <button
+            disabled={loading}
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:scale-95 transition px-5 py-2 rounded-md text-sm font-medium"
+          >
+            {loading ? (
+              <>
+                Creating
+                <Loader2 className="animate-spin size-4" />
+              </>
+            ) : (
+              "Create with AI"
+            )}
+          </button>
+        </div>
+      </form>
     </section>
   );
 };

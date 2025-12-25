@@ -128,7 +128,7 @@ const Projects = () => {
     );
   }
 
-  if (!project || !project.current_code) {
+  if (!loading && !isGenerating && (!project || !project.current_code)) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="text-2xl font-medium text-gray-200">
@@ -142,7 +142,6 @@ const Projects = () => {
     project && (
       <div className="flex flex-col h-screen w-full bg-gray-900 text-white">
         <div className="flex max-sm:flex-col sm:items-center gap-4 px-4 py-2 no-scrollbar">
-          {/* left */}
           <div className="flex items-center gap-2 sm:min-w-90 text-nowrap">
             <img
               src="/favicon.svg"
@@ -173,7 +172,6 @@ const Projects = () => {
             </div>
           </div>
 
-          {/* center  */}
           <div className="hidden sm:flex gap-2 bg-gray-950 p-1.5 rounded-md">
             <SmartphoneIcon
               onClick={() => setDevice("phone")}
@@ -195,7 +193,6 @@ const Projects = () => {
             />
           </div>
 
-          {/* right  */}
           <div className="flex items-center justify-end gap-3 flex-1 text-xs sm:text-sm">
             <button
               onClick={saveProject}

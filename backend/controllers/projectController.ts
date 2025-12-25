@@ -55,7 +55,7 @@ export const makeRevision = async (req: Request, res: Response) => {
 
     // Enhance Prompt
     const promptEnhanceResponse = await openai.chat.completions.create({
-      model: "kwaipilot/kat-coder-pro:free",
+      model: "tngtech/deepseek-r1t2-chimera:free",
       messages: [
         {
           role: "system",
@@ -95,7 +95,7 @@ Return ONLY the enhanced request, nothing else. Keep it concise (1-2 sentences).
     });
 
     const codegenerationResponse = await openai.chat.completions.create({
-      model: "kwaipilot/kat-coder-pro:free",
+      model: "tngtech/deepseek-r1t2-chimera:free",
       messages: [
         {
           role: "system",
