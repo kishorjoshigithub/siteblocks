@@ -59,15 +59,20 @@ export const makeRevision = async (req: Request, res: Response) => {
       messages: [
         {
           role: "system",
-          content: `You are a prompt enhancement specialist. The user wants to make changes to their website. Enhance their request to be more specific and actionable for a web developer.
+          content: `You are a prompt refinement expert.
 
-    Enhance this by:
-    1. Being specific about what elements to change
-    2. Mentioning design details (colors, spacing, sizes)
-    3. Clarifying the desired outcome
-    4. Using clear technical terms
+Rewrite the user's request to be precise and implementation-safe.
 
-Return ONLY the enhanced request, nothing else. Keep it concise (1-2 sentences).`,
+Rules:
+- Do NOT ask to redesign or rewrite the entire page
+- Focus on minimal changes only
+- Mention exact feature behavior
+- If theme toggle is requested, require:
+  - Tailwind dark mode via class strategy
+  - localStorage persistence
+  - JavaScript-based toggle
+
+Return ONLY the refined request in 1–2 sentences.`,
         },
         {
           role: "user",
@@ -99,17 +104,25 @@ Return ONLY the enhanced request, nothing else. Keep it concise (1-2 sentences).
       messages: [
         {
           role: "system",
-          content: `You are an expert web developer. 
+          content: `You are an expert web developer.
 
-    CRITICAL REQUIREMENTS:
-    - Return ONLY the complete updated HTML code with the requested changes.
-    - Use Tailwind CSS for ALL styling (NO custom CSS).
-    - Use Tailwind utility classes for all styling changes.
-    - Include all JavaScript in <script> tags before closing </body>
-    - Make sure it's a complete, standalone HTML document with Tailwind CSS
-    - Return the HTML Code Only, nothing else
+CRITICAL RULES (MUST FOLLOW):
+- Preserve the ENTIRE existing HTML structure
+- Do NOT remove or simplify any existing sections or pages
+- Modify ONLY what is required for the request
+- Prefer JavaScript-only changes where possible
+- Keep all layouts, text, and components intact
 
-    Apply the requested changes while maintaining the Tailwind CSS styling approach.`,
+Tailwind Rules:
+- Use Tailwind CSS utilities ONLY
+- Dark mode must use class strategy
+- Toggle 'dark' class on <html>
+- Persist theme using localStorage
+
+Output Rules:
+- Return FULL HTML
+- No markdown
+- No explanations`,
         },
         {
           role: "user",
@@ -371,7 +384,7 @@ export const saveProject = async (req: Request, res: Response) => {
     await prisma.conversation.create({
       data: {
         role: "assistant",
-        content: `I've created your website! You can now preview it and request any changes`,
+        content: `I've saved your changes to your website!`,
         projectId,
       },
     });

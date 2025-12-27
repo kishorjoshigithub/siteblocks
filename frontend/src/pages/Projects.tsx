@@ -41,23 +41,23 @@ const Projects = () => {
     try {
       const { data } = await api.get(`/api/user/project/${projectId}`);
       setProject(data?.project);
+      // console.log(data);
       setIsGenerating(data?.project?.current_code ? false : true);
-      setLoading(false);
     } catch (error: any) {
-      setLoading(false);
       toast.error(error.response.data.message || error.message);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const togglePublish = async () => {
     try {
       const { data } = await api.get(`/api/user/publish-toggle/${projectId}`);
-
       setProject((prev) =>
         prev ? { ...prev, isPublished: !prev.isPublished } : null
       );
-      toast.success(data.project);
+      toast.success(data?.message);
     } catch (error: any) {
       toast.error(error.response.data.message || error.message);
       console.error(error);
@@ -94,9 +94,7 @@ const Projects = () => {
         code,
       });
       toast.success("Project saved successfully");
-      setIsSaving(false);
     } catch (error: any) {
-      setIsSaving(false);
       toast.error(error.response.data.message || error.message);
       console.error(error);
     } finally {
@@ -144,7 +142,7 @@ const Projects = () => {
         <div className="flex max-sm:flex-col sm:items-center gap-4 px-4 py-2 no-scrollbar">
           <div className="flex items-center gap-2 sm:min-w-90 text-nowrap">
             <img
-              src="/favicon.svg"
+              src="/favicon.png"
               alt="logo"
               className="h-6 cursor-pointer"
               onClick={() => navigate("/")}

@@ -46,7 +46,7 @@ const EMPTY_STYLES: ElementStyles = {
 
 const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>(
   (
-    { project, isGenerating, device = "desktop", showEditorPanel = true },
+    { project, isGenerating, device = "desktop", showEditorPanel = false },
     ref
   ) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -130,10 +130,6 @@ const ProjectPreview = forwardRef<ProjectPreviewRef, ProjectPreviewProps>(
         "*"
       );
     };
-
-    useImperativeHandle(ref, () => ({
-      getCode: () => project?.current_code,
-    }));
 
     const injectPreview = (html?: string) => {
       if (!html) return "";

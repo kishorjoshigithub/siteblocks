@@ -285,10 +285,14 @@ export const togglePublish = async (req: Request, res: Response) => {
       },
     });
 
+    const projectUpdated = await prisma.websiteProject.findUnique({
+      where: { id: projectId },
+    });
+
     res.json({
-      message: project.isPublished
-        ? " Project unpublished successfully"
-        : " Project published successfully",
+      message: projectUpdated?.isPublished
+        ? " Project published successfully"
+        : " Project unpublished successfully",
     });
   } catch (error: any) {
     console.log(error.code);

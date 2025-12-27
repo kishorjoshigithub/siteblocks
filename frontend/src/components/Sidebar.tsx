@@ -92,7 +92,7 @@ const Sidebar = ({
   }, [project.conversation.length, isGenerating]);
   return (
     <div
-      className={`h-full sm:max-w-sm rounded-xl bg-gray-900 border-gray-800 transition-all
+      className={`h-full sm:max-w-sm rounded-xl bg-gray-900 border-gray-800 transition-all duration-300
       ${isMenuOpen ? "max-sm:w-0 overflow-hidden" : "w-full"}`}
     >
       <div className="flex flex-col h-full">

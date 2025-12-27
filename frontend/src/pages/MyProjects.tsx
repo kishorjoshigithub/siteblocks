@@ -124,7 +124,7 @@ const MyProjects = () => {
                           Preview
                         </button>
                         <button
-                          onClick={() => navigate(`/projects/${project.id}`)}
+                          onClick={() => navigate(`/project/${project.id}`)}
                           className="px-3 py-1.5 bg-white/10 hover:bg-white/15 rounded-md transition-colors"
                         >
                           Open
